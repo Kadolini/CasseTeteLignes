@@ -3,8 +3,12 @@ package Modele;
 
 /**
  *
- * @author Fazul Nazar
+ * @author Askia Abdel Kader
  */
-class Symbol {
-    
+public enum Symbol {
+    VIDE,
+    ETOILE,
+    SPIRAL,
+    C;
 }
+

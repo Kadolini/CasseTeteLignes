@@ -2,8 +2,11 @@ package Modele;
 
 /**
  *
- * @author Fazul Nazar
+ * @author Askia Abdel Kader
  */
-class Route {
-    
+public enum Route {
+    HAUT,
+    BAS,
+    GAUCHE,
+    DROITE;
 }

@@ -15,7 +15,7 @@ import javafx.stage.Stage;
 
 /**
  *
- * @author Utilisateur
+ * @author Askia Abdel Kader
  */
 public class CasseTete extends Application {
     
