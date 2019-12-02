@@ -6,8 +6,17 @@ package Modele;
  * @author Fazul Nazar
  */
 public enum Route {
-    HAUT,
-    BAS,
-    GAUCHE,
-    DROITE;
+    EMPTY,
+    UP,
+    DOWN,
+    LEFT,
+    RIGHT,
+    LEFTUP,
+    LEFTDOWN,
+    RIGHTDOWN,
+    RIGHTUP,
+    UPLEFT,
+    DOWNLEFT,
+    DOWNRIGHT,
+    UPRIGHT;
 }
