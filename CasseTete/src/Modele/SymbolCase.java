@@ -4,6 +4,7 @@ package Modele;
 /**
  *
  * @author Fazul Nazar
+ * @author Askia Abdel Kader
  */
 public class SymbolCase extends Case {
     private Symbol symbol;
