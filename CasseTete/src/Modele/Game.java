@@ -1,8 +1,8 @@
 package Modele;
 
 /**
- *
- * @author Fajr
+ * @author Askia Abdel Kader
+ * @author Fazul Nazar
  */
 public class Game {
     private Board board;
