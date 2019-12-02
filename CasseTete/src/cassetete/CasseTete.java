@@ -30,7 +30,7 @@ public class CasseTete extends Application {
                 System.out.println("Hello World!");
             }
         });
-        
+
         StackPane root = new StackPane();
         root.getChildren().add(btn);
         
