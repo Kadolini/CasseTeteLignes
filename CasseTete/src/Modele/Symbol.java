@@ -7,9 +7,10 @@ package Modele;
  * @author Fazul Nazar
  */
 public enum Symbol {
-    VIDE,
-    ETOILE,
+    WALL,
+    STAR,
     SPIRAL,
-    C;
+    SQUARE,
+    TRIANGLE;
 }
 
