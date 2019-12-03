@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * @author Fazul Nazar
  */
 public class Board {
-    private final int LARGEUR, HAUTEUR;
+    public final int LARGEUR, HAUTEUR;
     private Case[][] grid;
     private Route[] routes;
     private Symbol[] Symboles;
@@ -21,9 +21,9 @@ public class Board {
     private boolean boardIsFull; // Indique si toutes les cases sont remplies
     private boolean symbolsLinked; // Indique si tout les symboles ont été reliés à leur homonyme
     
-    public Board(int size) {
-        LARGEUR = size;
-        HAUTEUR = size;
+    public Board(int s1, int s2) {
+        LARGEUR = s1;
+        HAUTEUR = s2;
         grid = new Case[LARGEUR][HAUTEUR];
         //nbPts = 0;
         boardIsFull = false;
@@ -56,12 +56,12 @@ public class Board {
         symbolsLinked = linked;
     }
     
-    public void initBoard(int size){
-        Board levelBoard = new Board(size);
+    public void initBoard(int s1, int s2){
+        Board levelBoard = new Board(s1,s2);
     }
     
-    public void startGame(int size){
-        initBoard(size);
+    public void startGame(int s1, int s2){
+        initBoard(s1,s2);
     }
     
     

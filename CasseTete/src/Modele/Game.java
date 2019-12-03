@@ -10,7 +10,7 @@ public class Game {
     
     
     public Game(){
-        board = new Board(3);
+        board = new Board(300,300);
     }
     
     public void startGame(){

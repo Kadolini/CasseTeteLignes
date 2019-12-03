@@ -5,7 +5,7 @@ package Modele;
  *
  * @author Fazul Nazar
  */
-class Position {
+public class Position {
     private int positionX;
     private int positionY;
     
