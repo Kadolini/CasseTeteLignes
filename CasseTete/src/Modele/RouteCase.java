@@ -9,7 +9,13 @@ package Modele;
 public class RouteCase extends Case {
     private Route route;
     
-    public RouteCase(){}
+    public RouteCase(){
+        super();
+    }
+    public RouteCase(Route route, int posx, int posy){
+        super(posx,posx);
+        this.route = route;
+    }
     
     public Route getRoute(){
         return route;

@@ -11,8 +11,7 @@ public class Case {
     
     public Case(){}
     public Case(int posX , int posY){
-        position.setPositionX(posX);
-        position.setPositionY(posY);
+        position = new Position(posX,posY);
     }
     public Position getPosition(){
         return position;

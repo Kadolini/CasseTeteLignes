@@ -9,7 +9,8 @@ package Modele;
 public class SymbolCase extends Case {
     private Symbol symbol;
     
-     public SymbolCase(Symbol symbol){
+    public SymbolCase(Symbol symbol, int posx , int posy){
+        super(posx, posy);
         this.symbol = symbol;
      }
     
