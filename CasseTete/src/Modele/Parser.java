@@ -14,11 +14,13 @@ public class Parser {
     //Attributs du Parser
     int[] boardSize; //Tableau d'entiers qui stockent la taille du plateau à l'index 0(largeur) et 1 (longueur)
     Case[][] casing; //Tableau representant le plateau
+    SymbolCase[][] symbolcasing;
     Symbol s;
     Route r;
     
     
-    public Parser(){
+    public Parser(String fileName) throws  IOException{
+        parse(fileName);
 
     }
 
@@ -51,18 +53,23 @@ public class Parser {
             switch (symboler[0]){
                 case "SP" :
                      casing[Integer.parseInt(symboler[1])][Integer.parseInt(symboler[2])] = new SymbolCase(s.SPIRAL, Integer.parseInt(symboler[1]), Integer.parseInt(symboler[2]));
+                    symbolcasing[Integer.parseInt(symboler[1])][Integer.parseInt(symboler[2])] = new SymbolCase(s.SPIRAL, Integer.parseInt(symboler[1]), Integer.parseInt(symboler[2]));
                     break;
                 case "ST" :
                     casing[Integer.parseInt(symboler[1])][Integer.parseInt(symboler[2])] = new SymbolCase(s.STAR, Integer.parseInt(symboler[1]), Integer.parseInt(symboler[2]));
+                    symbolcasing[Integer.parseInt(symboler[1])][Integer.parseInt(symboler[2])] = new SymbolCase(s.STAR, Integer.parseInt(symboler[1]), Integer.parseInt(symboler[2]));
                     break;
                 case "TR" :
                     casing[Integer.parseInt(symboler[1])][Integer.parseInt(symboler[2])] = new SymbolCase(s.TRIANGLE, Integer.parseInt(symboler[1]), Integer.parseInt(symboler[2]));
+                    symbolcasing[Integer.parseInt(symboler[1])][Integer.parseInt(symboler[2])] = new SymbolCase(s.TRIANGLE, Integer.parseInt(symboler[1]), Integer.parseInt(symboler[2]));
                     break;
                 case "SQ" :
                     casing[Integer.parseInt(symboler[1])][Integer.parseInt(symboler[2])] = new SymbolCase(s.SQUARE, Integer.parseInt(symboler[1]), Integer.parseInt(symboler[2]));
+                    symbolcasing[Integer.parseInt(symboler[1])][Integer.parseInt(symboler[2])] = new SymbolCase(s.SQUARE, Integer.parseInt(symboler[1]), Integer.parseInt(symboler[2]));
                     break;
                 case "W" :
                     casing[Integer.parseInt(symboler[1])][Integer.parseInt(symboler[2])] = new SymbolCase(s.WALL, Integer.parseInt(symboler[1]), Integer.parseInt(symboler[2]));
+                    symbolcasing[Integer.parseInt(symboler[1])][Integer.parseInt(symboler[2])] = new SymbolCase(s.WALL, Integer.parseInt(symboler[1]), Integer.parseInt(symboler[2]));
                     break;
                 default: break;
             }
@@ -76,6 +83,9 @@ public class Parser {
 
     }
 
+    public SymbolCase[][] getSymbolcasing() {
+        return symbolcasing;
+    }
 
     public Case[][] getCasing() {
         return casing;
