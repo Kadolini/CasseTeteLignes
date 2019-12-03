@@ -1,5 +1,7 @@
 package Modele;
 
+import java.io.IOException;
+
 /**
  * @author Askia Abdel Kader
  * @author Fazul Nazar
@@ -7,13 +9,15 @@ package Modele;
 public class Game {
     private Board board;
     private int levels;
+    private Parser parser;
     
-    
-    public Game(){
-        board = new Board(300,300);
+    public Game() throws IOException{
+        parser = new Parser("../levels/level1.txt");
+        board = new Board(parser.getBoardSize()[0],parser.getBoardSize()[0], parser.getfileName());
     }
     
     public void startGame(){
+        board.initBoard(parser.getBoardSize()[0],parser.getBoardSize()[0]);
         while(!board.getBoardIsFull() && !board.getSymbolsLinked()){
             // on fait tourner le jeu ici
             if(board.getBoardIsFull() && !board.getSymbolsLinked()){

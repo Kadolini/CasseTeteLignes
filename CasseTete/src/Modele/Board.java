@@ -74,7 +74,7 @@ public class Board {
         symbolsLinked = linked;
     }
     
-    public void initBoard(int s1, int s2, String fileName) throws IOException{
+    public void initBoard(int s1, int s2){
         for (int i = 0; i< LARGEUR ;i++){
             for (int j = 0; j< HAUTEUR; j++){
                 grid[i][j] = parser.getCasing()[i][j];

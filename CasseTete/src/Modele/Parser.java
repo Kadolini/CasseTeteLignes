@@ -17,14 +17,18 @@ public class Parser {
     SymbolCase[][] symbolcasing;
     Symbol s;
     Route r;
+    private String fileName;
     
     
     public Parser(String fileName) throws  IOException{
+        this.fileName= fileName;
         parse(fileName);
 
     }
 
-
+    public String getfileName(){
+        return this.fileName;
+    }
     private BufferedReader getBuffer(String fileName) throws IOException {
 
         File file = new File(fileName);
