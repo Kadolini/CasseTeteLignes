@@ -29,6 +29,7 @@ public class Board extends Observable{
     private Parser parser;
     private SymbolCase draggedSymbol;
     private JOptionPane d ;
+    private ArrayList<Case> caseList;
     
     public Board(int s1, int s2, String fileName) throws IOException {
         LARGEUR = s1;
@@ -40,6 +41,10 @@ public class Board extends Observable{
         onlySymbols = new SymbolCase[s1][s2];
         parser = new Parser(fileName);
         d = new JOptionPane();
+        caseList = new ArrayList<>();
+
+
+
         
 
 
@@ -87,8 +92,11 @@ public class Board extends Observable{
         for (int i = 0; i< LARGEUR ;i++){
             for (int j = 0; j< HAUTEUR; j++){
                 grid[i][j] = parser.getCasing()[i][j];
+                caseList.add(parser.getCasing()[i][j]);
             }
         }
+
+
     }
 
     public SymbolCase[][] getOnlySymbols() {
@@ -114,74 +122,84 @@ public class Board extends Observable{
                     "Mauvaise manip", JOptionPane.ERROR_MESSAGE);
         }
     }
-/*    
 
-    public boolean voisin(Case precedente, Case source){
-        return ((source.getX()+1) == precedente.getX())  || 
-                ((source.getY()+1) == precedente.getY()) ||
-                ((source.getX()-1) == precedente.getX()) ||
-                ((source.getY()-1) == precedente.getY());
+    public ArrayList<Case> getCaseList() {
+        return caseList;
     }
-    
-    public void enterDD(int i, int j) {
-        if(estLibre(tab[i][j]) && voisin(tab[i][j], chemin.dernierElement())
-          && !(tab[i][j].getClass().getName().equals("Modele.CaseSymbole"))){
-            System.out.println("J'entre dans la case suivante");
-            
-            if(chemin.getSize() >=2){
+
+    /*
+
+
+
+
+
+
+        public boolean voisin(Case precedente, Case source){
+            return ((source.getX()+1) == precedente.getX())  ||
+                    ((source.getY()+1) == precedente.getY()) ||
+                    ((source.getX()-1) == precedente.getX()) ||
+                    ((source.getY()-1) == precedente.getY());
+        }
+
+        public void enterDD(int i, int j) {
+            if(estLibre(tab[i][j]) && voisin(tab[i][j], chemin.dernierElement())
+              && !(tab[i][j].getClass().getName().equals("Modele.CaseSymbole"))){
+                System.out.println("J'entre dans la case suivante");
+
+                if(chemin.getSize() >=2){
+                    changeCaseEnRail(chemin, tab[i][j]);
+                }
+                chemin.ajouter(tab[i][j]);
+
+            }
+            else if(tab[i][j].getClass().getName().equals("Modele.CaseSymbole")
+                    && voisin(tab[i][j], chemin.dernierElement())){
+                CaseSymbole c1= (CaseSymbole)chemin.getListe().get(0);
+                CaseSymbole c2= (CaseSymbole)tab[i][j];
+                if(c1.getSymbole()== c2.getSymbole()){
                 changeCaseEnRail(chemin, tab[i][j]);
-            }
-            chemin.ajouter(tab[i][j]);
-            
-        } 
-        else if(tab[i][j].getClass().getName().equals("Modele.CaseSymbole") 
-                && voisin(tab[i][j], chemin.dernierElement())){
-            CaseSymbole c1= (CaseSymbole)chemin.getListe().get(0);
-            CaseSymbole c2= (CaseSymbole)tab[i][j];
-            if(c1.getSymbole()== c2.getSymbole()){
-            changeCaseEnRail(chemin, tab[i][j]);
-            
-            chemin.ajouter(tab[i][j]);
-            }
-            else{
-                invalider();
+
+                chemin.ajouter(tab[i][j]);
+                }
+                else{
+                    invalider();
+                }
             }
         }
-    }
-    
-    public void valider(){
-      setGrille();
-    }
-    
-    public void invalider(){
-        
-        chemin.effacerPile();
-    }
-    
-    public void stopDD(){
-        if(chemin.getListe().get(0).getClass().getName().equals("Modele.CaseSymbole") &&
-           chemin.dernierElement().getClass().getName().equals("Modele.CaseSymbole")){
-            CaseSymbole c1 = (CaseSymbole)chemin.getListe().get(0);
-            CaseSymbole c2 = (CaseSymbole)chemin.dernierElement();
-            if(c1.getSymbole() != c2.getSymbole() || 
-               (c1.getX()==c2.getX() && c1.getY()==c2.getY())||
-                c2.getCaseVerrouillee()==true){
-                invalider();
-                
+
+        public void valider(){
+          setGrille();
+        }
+
+        public void invalider(){
+
+            chemin.effacerPile();
+        }
+
+        public void stopDD(){
+            if(chemin.getListe().get(0).getClass().getName().equals("Modele.CaseSymbole") &&
+               chemin.dernierElement().getClass().getName().equals("Modele.CaseSymbole")){
+                CaseSymbole c1 = (CaseSymbole)chemin.getListe().get(0);
+                CaseSymbole c2 = (CaseSymbole)chemin.dernierElement();
+                if(c1.getSymbole() != c2.getSymbole() ||
+                   (c1.getX()==c2.getX() && c1.getY()==c2.getY())||
+                    c2.getCaseVerrouillee()==true){
+                    invalider();
+
+                }else{
+                    chemin.getListe().get(0).setCaseVerrouillee(true);
+                    chemin.dernierElement().setCaseVerrouillee(true);
+                    valider();
+                    chemin.effacerPile();
+
+                    setChanged();
+                    notifyObservers();
+                }
             }else{
-                chemin.getListe().get(0).setCaseVerrouillee(true);
-                chemin.dernierElement().setCaseVerrouillee(true);
-                valider();
-                chemin.effacerPile();
-                
-                setChanged();
-                notifyObservers();
+                invalider();
             }
-        }else{
-            invalider();
         }
-    }
-    */
+        */
     public int getHauteur(){
         return HAUTEUR;
     }
@@ -192,6 +210,10 @@ public class Board extends Observable{
     
     public int getTailleGrille(){
         return LARGEUR*HAUTEUR;
+    }
+
+    public Case[][] getGrid(){
+        return grid;
     }
     /*
     public void setCaseEnRail(int i, int j, CaseRails _case){
