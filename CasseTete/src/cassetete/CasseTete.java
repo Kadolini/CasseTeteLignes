@@ -16,8 +16,12 @@ import Modele.Symbol;
 import Modele.SymbolCase;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.application.Platform;
@@ -64,7 +68,7 @@ import javafx.scene.paint.Color;
  *
  * @author Askia Abdel Kader
  */
-public class CasseTete extends Application {
+public class CasseTete extends Application implements Observer{
    
     private static final int IMG_TAILLE = 32;
 
@@ -122,18 +126,29 @@ public class CasseTete extends Application {
             for (int y = 0; y < game.getBoard().getHauteur(); y++) {
                 images[x][y] = new ImageView();
                 gridPane.add(images[x][y], x, y);
-                gridPane.setStyle("-fx-border-color: white;");
+                gridPane.setStyle("-fx-border-color: black;");
                 
             }
         }
         
-        /*
-        Observer observateurPacman = new Observer() {
+        
+        Observer obsgrid = new Observer() {
             @Override
             public void update(Observable entite, Object _arg) {
-                dessiner();
+                updateGame(game);
             }
         };
+        /*
+        for (Case entite : game.getBoard().getCaseList() ) {
+            entite.addObserver(obsgrid);
+        }*/
+
+        /*
+        ***************************************************************************
+        * Methode qui met à jour la grille du jeu 
+        *
+        ********
+        *******************************************************************
         */
         /*
         for (Case unecase : board.listeEntites()) {
@@ -153,6 +168,10 @@ public class CasseTete extends Application {
         stage.setTitle("CASSE_TETE_LIGNES !");
         stage.setScene(scene);
         stage.show(); 
+        
+        
+        
+        /*CONTROLLER*/
         /*********************************************************************/
         
          // retourne une liste unidimensionnelle
@@ -221,6 +240,11 @@ public class CasseTete extends Application {
         
         //game.lancerJeu();
         draw();
+
+    /*@Override
+    public void update(Observable o, Object arg) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }*/
     }
     
     private synchronized void draw() {
@@ -281,7 +305,124 @@ public class CasseTete extends Application {
         
     }
     */
+   
+    /*
+    ***************************************************************************
+    * Procedure qui met à jour la grille à chaque modification éffectuée sur 
+    * sur la grille
+    * 
+    ***************************************************************************
+    */
+    /*@Override
+    public void update(Observable o, Object o1) {
+        try {
+            metAJourGrille(game.getBoard());
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(this.class.getName()).log(Level.SEVERE, null, ex);
+        }
+      
+    }
+    */
+    /*
+    ***************************************************************************
+    * Methode qui met à jour la grille du jeu 
+    *
+    ***************************************************************************
+    */
+    private void updateGrill(Game game) throws MalformedURLException{
         
+        for(int i = 0; i < game.getBoard().getHauteur(); i++){
+            for(int j = 0; j < game.getBoard().getLargeur(); j++){
+                if(game.getBoard().getIndexOfGrid(i, j).getClass().getName().equals("Modele.CaseSymbole")){
+                     CaseSymbole cs = (CaseSymbole) game.getBoard().getIndexOfGrid(i, j);
+                  
+                        File img = new File("images/"+cs.getSymbole()+".jpg");
+                        String local = img.toURI().toURL().toString();
+                        image = new Image(local);                                           
+                        ((ImageView)gridPane.getChildren().get(game.getBoard().getLargeur()*i + j)).setImage(image);
+                }
+                else if(game.getBoard().getIndexOfGrid(i, j).getClass().getName().equals("Modele.CaseRails")){
+                     CaseRails cr = (CaseRails) game.getBoard().getIndexOfGrid(i, j);
+                  
+                        File img = new File("images/"+cr.getRails()+".png");
+                        String local = img.toURI().toURL().toString();
+                        image = new Image(local);
+                        ((ImageView)gPane.getChildren().get(grille.getLargeur()*i + j)).setImage(image);
+                           
+                }
+            }
+        }
+        if(game.startGame() == 1){
+          
+            if (game.startGame() == 1) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Partie Terminée");
+                alert.setHeaderText("Bravo vous avez gagné!!!");
+                alert.setContentText("Que voulez-vous?");
+
+                ButtonType buttonRejouer = new ButtonType("Rejouer");
+                ButtonType buttonSuivant = new ButtonType("Suivant");
+                ButtonType buttonQuitter = new ButtonType("Quitter", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+                alert.getButtonTypes().setAll(buttonRejouer, buttonSuivant, buttonQuitter);
+
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.get() == buttonRejouer){
+                    replay();
+                } 
+                else if (result.get() == buttonSuivant){
+                     next();
+                    
+                }
+                else {
+                     System.exit(0);
+                }
+            } else {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Partie Terminée");
+                alert.setHeaderText("Vous avez perdu.");
+                alert.setContentText("Que voulez-vous?");
+
+                ButtonType buttonRejouer = new ButtonType("Rejouer");
+                ButtonType buttonQuitter = new ButtonType("Quitter", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+                alert.getButtonTypes().setAll(buttonRejouer, buttonQuitter);
+
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.get() == buttonRejouer){
+                     replay();
+                } 
+                else {
+                   System.exit(0);
+                }
+            }
+        }
+        
+    }
+    
+    
+    /*
+    ***************************************************************************
+    * Une méthode qui permet de réjouer une partie
+    * 
+    ***************************************************************************
+    */
+    public void replay() throws MalformedURLException{
+         start(stage);     
+    }
+    /*
+    ***************************************************************************
+    * Une méthode qui permet de lancer la partie suivante
+    * 
+    ***************************************************************************
+    */
+    public void next() throws MalformedURLException{
+       int nombre_de_partie=jeu.getJeuGrille().nbFichiers();
+        partieEnCours++;
+        if(partieEnCours>nombre_de_partie)partieEnCours=1;
+         start(stage);
+    }
+
         
     public static void main(String[] args) {
         launch(args);
