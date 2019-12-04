@@ -8,6 +8,7 @@ package Modele;
  */
 public class Case {
     private Position position;
+    private boolean isLocked;
     
     public Case(){}
     public Case(int posX , int posY){
@@ -28,5 +29,13 @@ public class Case {
     public void setPosition(int posX, int posY){
         position.setPositionX(posX);
         position.setPositionY(posY);
+    }
+
+    public boolean getIsLocked(){
+        return  this.isLocked;
+    }
+
+    public void setIsLocked(boolean newvalue){
+        this.isLocked =newvalue;
     }
 }

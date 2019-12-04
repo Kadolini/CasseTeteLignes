@@ -210,40 +210,42 @@ public class CasseTete extends Application {
         //game.lancerJeu();
     }
     
-  /*  private synchronized void dessiner() {
-        dessinerCarte();
-        dessinerEntites();
+    private synchronized void draw() {
+        drawGrid();
+        drawRoute();
     }
     
-    private synchronized void dessinerCarte() {
-        for (int x = 0; x < board.LARGEUR; x++) {
-            for (int y = 0; y < board.HAUTEUR; y++) {
-                if(game.getIndexOfGrid(x, y).getClass().getName() == "SymbolCase"){
-                    switch (.getIndexOfGrid(x, y)) {
+    private synchronized void drawGrid() {
+        for (int x = 0; x < game.getBoard().getLargeur(); x++) {
+            for (int y = 0; y < game.getBoard().getLongueur(); y++) {
+                if(game.getBoard().getOnlySymbols()[x][y].getClass().getName().equals("SymbolCase")){
+                    switch (game.getBoard().getOnlySymbols()[x][y].getSymbol()) {
                         case WALL:
-                            images[x][y].setImage(imgMur);
+                            images[x][y].setImage(imgWall);
                             break;
                         case STAR:
-                            images[x][y].setImage(imgVide);
+                            images[x][y].setImage(imgStar);
                             break;
-                        case Symbol.TRIANGLE:
-                            images[x][y].setImage(imgGomme);
+                        case TRIANGLE:
+                            images[x][y].setImage(imgTriangle);
                             break;
-                        case SUPER_GOMME:
-                            images[x][y].setImage(imgSuperGomme);
+                        case SQUARE:
+                            images[x][y].setImage(imgSquare);
                             break;
-                        default:
-                            images[x][y].setImage(imgVide);
+                        default :
                             break;
                     }
-                    images[x][y].setRotate(0);
+
+                }
+                else {
+                    images[x][y].setImage(imgEMPTY);
                 }
             }
         }
     }
     
     /*
-    private synchronized void dessinerEntites() {
+    private synchronized void drawRoute() {
         for (Entite entite : grille.listeEntites()) {
             if (entite.estVivant() && entite instanceof Pacman) {
                 images[entite.getX()][entite.getY()]
