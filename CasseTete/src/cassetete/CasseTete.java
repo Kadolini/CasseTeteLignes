@@ -159,7 +159,7 @@ public class CasseTete extends Application {
                 content.putString("");
                 db.setContent(content);
                 
-                board.startDD(gridPane.getRowIndex(obs), gridPane.getColumnIndex(obs));
+                game.startDD(gridPane.getRowIndex(obs), gridPane.getColumnIndex(obs));
                 System.out.println("Symbole detecté");
                 event.consume();
             });
@@ -167,13 +167,7 @@ public class CasseTete extends Application {
         }).map((obs) -> {
             obs.setOnDragEntered((DragEvent event) -> {
                 event.acceptTransferModes(TransferMode.ANY);
-                //---------------------------------------------------------
-                final File file = new File("son/rail.mp3"); 
-                final Media media = new Media(file.toURI().toString()); 
-                final MediaPlayer mediaPlayer = new MediaPlayer(media); 
-                mediaPlayer.play();
-                //---------------------------------------------------------
-                board.enterDD(this.gridPane.getRowIndex(obs), this.gridPane.getColumnIndex(obs));
+                game.enterDD(gridPane.getRowIndex(obs),gridPane.getColumnIndex(obs));
                 System.out.println("Vous etes dans une nouvelle case");
                 event.consume();
             });
@@ -192,17 +186,7 @@ public class CasseTete extends Application {
             obs.setOnDragDropped((DragEvent event) -> {
                 Dragboard db = event.getDragboard();
                 boolean success = false;
-                
-               //---------------------------------------------------------
-                final File file = new File("son/son.mp3"); 
-                final Media media = new Media(file.toURI().toString()); 
-                final MediaPlayer mediaPlayer = new MediaPlayer(media); 
-                mediaPlayer.play();
-                //---------------------------------------------------------
-        
-                
-                board.stopDD();
-                 
+                game.stopDD();
                 System.out.println("Souris relachée");
                 event.setDropCompleted(success);
                 event.consume();
@@ -211,64 +195,6 @@ public class CasseTete extends Application {
         
         /**********************************************************************************/
         
-        // la vue observe les "update" du modèle, et réalise les mises à jour graphiques
-        board.addObserver(new Observer() {
-
-            @Override
-            public void update(Observable o, Object arg) {
-                // TODO
-            }
-        });
-
-        for (int column = 0; column < 5; column++) {
-            for (int row = 0; row < 5; row++) {
-
-                final int fColumn = column;
-                final int fRow = row;
-
-                final Text t = new Text(" " + column + "-" + row + " ");
-                tabText[column][row] = t;
-                t.setFont(Font.font("Verdana", 25));
-                
-                
-                t.setOnDragDetected(new EventHandler<MouseEvent>() {
-                    public void handle(MouseEvent event) {
-
-                        Dragboard db = t.startDragAndDrop(TransferMode.ANY);
-                        ClipboardContent content = new ClipboardContent();       
-                        content.putString(""); // non utilisé actuellement
-                        db.setContent(content);
-                        event.consume();
-                        m.startDD(fColumn, fRow);
-                    }
-                });
-
-                t.setOnDragEntered(new EventHandler<DragEvent>() {
-                    public void handle(DragEvent event) {
-                        
-                        m.parcoursDD(fColumn, fRow);
-                        event.consume();
-                    }
-                });
-                
-                t.setOnDragDone(new EventHandler<DragEvent>() {
-                    public void handle(DragEvent event) {
-                        
-                        // attention, le setOnDragDone est déclenché par la source du Drag&Drop
-                        
-                        m.stopDD(fColumn, fRow);
-                        
-                    }
-                });
-
-                gPane.add(tabText[column][row], column, row);
-            }
-        }
-
-        gPane.setGridLinesVisible(true);
-
-        border.setCenter(gPane);
-
         
         /**********************************************************************************/
         gridPane.requestFocus();
@@ -284,7 +210,7 @@ public class CasseTete extends Application {
         //game.lancerJeu();
     }
     
-  /*  private synchronized void dessiner() {
+    private synchronized void dessiner() {
         dessinerCarte();
         dessinerEntites();
     }
@@ -292,8 +218,8 @@ public class CasseTete extends Application {
     private synchronized void dessinerCarte() {
         for (int x = 0; x < board.LARGEUR; x++) {
             for (int y = 0; y < board.HAUTEUR; y++) {
-                if(board.getIndexOfGrid(x, y).getClass().getName() == "SymbolCase"){
-                    switch (board.getIndexOfGrid(x, y)) {
+                if(game.getIndexOfGrid(x, y).getClass().getName() == "SymbolCase"){
+                    switch (.getIndexOfGrid(x, y)) {
                         case WALL:
                             images[x][y].setImage(imgMur);
                             break;
@@ -315,7 +241,7 @@ public class CasseTete extends Application {
             }
         }
     }
-    */
+    
     /*
     private synchronized void dessinerEntites() {
         for (Entite entite : grille.listeEntites()) {
