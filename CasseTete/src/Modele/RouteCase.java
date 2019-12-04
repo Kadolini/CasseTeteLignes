@@ -11,7 +11,7 @@ public class RouteCase extends Case {
     
     public RouteCase(int posx , int posy){
         super(posx,posy);
-        this.route = Route.EMPTY;
+        this.route = Route.EMPTY;//
     }
     public RouteCase(Route route, int posx, int posy){
         super(posx,posx);
