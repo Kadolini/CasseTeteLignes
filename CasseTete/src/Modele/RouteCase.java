@@ -9,8 +9,9 @@ package Modele;
 public class RouteCase extends Case {
     private Route route;
     
-    public RouteCase(){
-        super();
+    public RouteCase(int posx , int posy){
+        super(posx,posy);
+        this.route = Route.EMPTY;
     }
     public RouteCase(Route route, int posx, int posy){
         super(posx,posx);
