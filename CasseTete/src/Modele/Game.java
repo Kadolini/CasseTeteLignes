@@ -6,13 +6,13 @@ import java.util.Observable;
  * @author Askia Abdel Kader
  * @author Fazul Nazar
  */
-public class Game extends Observable{
+public class Game{
     private Board board;
     private int levels;
     private Parser parser;
     
     public Game() throws IOException{
-        parser = new Parser("../levels/level1.txt");
+        parser = new Parser("src/Levels/level1.txt");
         board = new Board(parser.getBoardSize()[0],parser.getBoardSize()[0], parser.getfileName());
     }
     

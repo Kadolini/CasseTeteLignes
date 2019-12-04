@@ -5,24 +5,28 @@
  */
 package Modele;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Observable;
 
 /**
  *
  * @author Askia Abdel Kader
  * @author Fazul Nazar
  */
-public class Board {
+public class Board extends Observable{
     public final int LARGEUR, HAUTEUR;
     private Case[][] grid;
-    private Route[] routes;
-    private Symbol[] Symboles;
-    private int nbPts; /*Nombre de points qui servira peut-être à voir combien de chemin ont été validé...*/
     private boolean boardIsFull; // Indique si toutes les cases sont remplies
     private boolean symbolsLinked; // Indique si tout les symboles ont été reliés à leur homonyme
     private SymbolCase[][] onlySymbols;
     private Parser parser;
+    private File file;
     
     public Board(int s1, int s2, String fileName) throws IOException {
         LARGEUR = s1;
@@ -37,6 +41,56 @@ public class Board {
         
     }
     
+    
+    public int numberOfFile() {
+        File directory = new File("Levels");
+        File[] f = directory.listFiles();
+        int x = 0;
+        for (File f1 : f) {
+            if (f1.isFile()) {
+                x++;
+            }
+        }
+        return x;
+    }    
+    
+    @Override
+    public String toString(){
+        String str="";
+        for(int i=0; i<HAUTEUR; i++){
+            for(int j=0; j< LARGEUR; j++){
+                str+=" "+grid[i][j].toString();
+            }
+            str+="\n";
+        }
+        return str;
+    }
+    
+    
+    public final String readFile(int num){
+        String str="";
+        String myfile = "Levels/level"+num+".txt";
+		//lecture du fichier texte	
+		try{
+                    InputStream inpStr = new FileInputStream(myfile); 
+                    InputStreamReader inpStrReader = new InputStreamReader(inpStr);
+                    BufferedReader b;
+                    b = new BufferedReader(inpStrReader);
+                    String line;
+                    while ((line=b.readLine())!=null){
+                            str+=line;
+                    }
+                    b.close(); 
+		}		
+		catch (IOException e){
+			System.out.println(e.toString());
+		}
+                return str;
+    }
+    
+    
+    
+    
     public SymbolCase[][] buildOnlySymbols() {
         for (int i = 0; i< LARGEUR ;i++){
             for (int j = 0; j< HAUTEUR; j++){
@@ -48,14 +102,64 @@ public class Board {
 
         return onlySymbols;
     }
-
-
+    
+    
+    public void changeCaseEnRail(Pile pile, Case _case){
+        Case precedente = pile.avantDernierElement() ;
+        Case source = pile.dernierElement();
+        Case suivante = _case;
+        
+        CaseRails caseSourceEnRail = new CaseRails(Rails.VIDE, source.getX(), source.getY());
+         
+       if((precedente.getX() == source.getX()-1 && suivante.getX() == source.getX()+1) 
+        || (precedente.getX() == source.getX()+1 && suivante.getX() == source.getX()-1)){
+           
+           caseSourceEnRail.setRails(Rails.VERTICALE);
+           
+       }else if((precedente.getY() == source.getY()-1 || precedente.getY() == source.getY()+1) &&
+          (suivante.getY() == source.getY()+1 || suivante.getY() == source.getY()-1)){
+           
+           caseSourceEnRail.setRails(Rails.HORIZONTALE);
+          
+       }else if((precedente.getX() == source.getX()-1 && suivante.getY() == source.getY()+1) || 
+               (precedente.getY() == source.getY()+1 && suivante.getX() == source.getX()-1)){
+           
+           caseSourceEnRail.setRails(Rails.HAUTDROIT);
+           
+       }else if((precedente.getX() == source.getX()-1 && suivante.getY() == source.getY()-1) ||
+               (precedente.getY() == source.getY()-1 && suivante.getX() == source.getX()-1)){
+           
+           caseSourceEnRail.setRails(Rails.HAUTGAUCHE);
+          
+       }else if((precedente.getX() == source.getX()+1 && suivante.getY() == source.getY()+1) ||
+               (precedente.getY() == source.getY()+1 && suivante.getX() == source.getX()+1)){
+           
+           caseSourceEnRail.setRails(Rails.BASDROIT);
+         
+       }else if((precedente.getX() == source.getX()+1 && suivante.getY() == source.getY()-1) ||
+               (precedente.getY() == source.getY()-1 && suivante.getX() == source.getX()+1)){
+           
+           caseSourceEnRail.setRails(Rails.BASGAUCHE);
+          
+       }
+        pile.getListe().set(pile.getSize()-1, caseSourceEnRail);
+    }
+    
+    
+    
     public void setIndexOfGrid(int i, int j, Case newCase){
         this.grid[i][j] = newCase;
     }
     
+    
+    public boolean isFree(Case _case){
+        return _case.getClass().getName().equals("Modele.Case");
+    }    
+    
+    
+    
     public Case getIndexOfGrid(int i, int j){
-        return this.grid[i][j];
+        return grid[i][j];
     }
     
     public boolean getBoardIsFull(){
@@ -85,6 +189,111 @@ public class Board {
     public SymbolCase[][] getOnlySymbols() {
         return onlySymbols;
     }
+    
+    public void startDD(int i, int j){
+        if(tab[i][j].getClass().getName().equals("Modele.CaseSymbole") &&
+           tab[i][j].getCaseVerrouillee()==false){
+          CaseSymbole csymbole=(CaseSymbole) tab[i][j];
+          if(csymbole.getSymbole() != Symbole.VIDE){
+            chemin.ajouter(tab[i][j]); 
+            }
+        }
+        else 
+           System.out.println("Cliquez sur un Symbole pour tracer le chemin! ");
+    }    
+
+    public boolean voisin(Case precedente, Case source){
+        return ((source.getX()+1) == precedente.getX())  || 
+                ((source.getY()+1) == precedente.getY()) ||
+                ((source.getX()-1) == precedente.getX()) ||
+                ((source.getY()-1) == precedente.getY());
+    }
+    
+    public void enterDD(int i, int j) {
+        if(estLibre(tab[i][j]) && voisin(tab[i][j], chemin.dernierElement())
+          && !(tab[i][j].getClass().getName().equals("Modele.CaseSymbole"))){
+            System.out.println("J'entre dans la case suivante");
+            
+            if(chemin.getSize() >=2){
+                changeCaseEnRail(chemin, tab[i][j]);
+            }
+            chemin.ajouter(tab[i][j]);
+            
+        } 
+        else if(tab[i][j].getClass().getName().equals("Modele.CaseSymbole") 
+                && voisin(tab[i][j], chemin.dernierElement())){
+            CaseSymbole c1= (CaseSymbole)chemin.getListe().get(0);
+            CaseSymbole c2= (CaseSymbole)tab[i][j];
+            if(c1.getSymbole()== c2.getSymbole()){
+            changeCaseEnRail(chemin, tab[i][j]);
+            
+            chemin.ajouter(tab[i][j]);
+            }
+            else{
+                invalider();
+            }
+        }
+    }
+    
+    public void valider(){
+      setGrille();
+    }
+    
+    public void invalider(){
+        
+        chemin.effacerPile();
+    }
+    
+    public void stopDD(){
+        if(chemin.getListe().get(0).getClass().getName().equals("Modele.CaseSymbole") &&
+           chemin.dernierElement().getClass().getName().equals("Modele.CaseSymbole")){
+            CaseSymbole c1 = (CaseSymbole)chemin.getListe().get(0);
+            CaseSymbole c2 = (CaseSymbole)chemin.dernierElement();
+            if(c1.getSymbole() != c2.getSymbole() || 
+               (c1.getX()==c2.getX() && c1.getY()==c2.getY())||
+                c2.getCaseVerrouillee()==true){
+                invalider();
+                
+            }else{
+                chemin.getListe().get(0).setCaseVerrouillee(true);
+                chemin.dernierElement().setCaseVerrouillee(true);
+                valider();
+                chemin.effacerPile();
+                
+                setChanged();
+                notifyObservers();
+            }
+        }else{
+            invalider();
+        }
+    }
+    
+    public int getLongueur(){
+        return longueur;
+    }
+    
+    public int getLargeur(){
+        return largeur;
+    }
+    
+    public int getTailleGrille(){
+        return longueur*largeur;
+    }
+    
+    public void setCaseEnRail(int i, int j, CaseRails _case){
+        tab[i][j] = _case;
+    }
+    
+    public void setGrille(){
+        for(int i = 1; i < chemin.getSize()-1 ; i++){
+            setCaseEnRail(chemin.getListe().get(i).getX(),
+                          chemin.getListe().get(i).getY(), 
+                         (CaseRails)chemin.getListe().get(i));
+        }
+        
+    }
+    
+    
 }
 
 

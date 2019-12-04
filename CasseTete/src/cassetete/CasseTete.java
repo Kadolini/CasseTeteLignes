@@ -210,7 +210,7 @@ public class CasseTete extends Application {
         //game.lancerJeu();
     }
     
-    private synchronized void dessiner() {
+  /*  private synchronized void dessiner() {
         dessinerCarte();
         dessinerEntites();
     }
