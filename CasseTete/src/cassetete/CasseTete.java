@@ -142,19 +142,6 @@ public class CasseTete extends Application{
         for (Case entite : game.getBoard().getCaseList() ) {
             entite.addObserver(obsgrid);
         }*/
-
-        /*
-        ***************************************************************************
-        * Methode qui met à jour la grille du jeu 
-        *
-        ********
-        *******************************************************************
-        */
-        /*
-        for (Case unecase : board.listeEntites()) {
-            entite.addObserver(observateurPacman);
-        }
-        */
         
         //StackPane stackPane = new StackPane();
         BorderPane stackPane = new BorderPane();
@@ -238,13 +225,7 @@ public class CasseTete extends Application{
             }
         });
         
-        //game.lancerJeu();
         draw();
-
-    /*@Override
-    public void update(Observable o, Object arg) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }*/
     }
     
     private synchronized void draw() {
@@ -305,24 +286,7 @@ public class CasseTete extends Application{
         
     }
     */
-   
-    /*
-    ***************************************************************************
-    * Procedure qui met à jour la grille à chaque modification éffectuée sur 
-    * sur la grille
-    * 
-    ***************************************************************************
-    */
-    /*@Override
-    public void update(Observable o, Object o1) {
-        try {
-            metAJourGrille(game.getBoard());
-        } catch (MalformedURLException ex) {
-            Logger.getLogger(this.class.getName()).log(Level.SEVERE, null, ex);
-        }
-      
-    }
-    */
+
     /*
     ***************************************************************************
     * Methode qui met à jour la grille du jeu 
