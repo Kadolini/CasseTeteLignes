@@ -6,23 +6,23 @@ package Modele;
  */
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
+
 
 public class Parser {
     
     
     //Attributs du Parser
-    int[] boardSize; //Tableau d'entiers qui stockent la taille du plateau à l'index 0(largeur) et 1 (longueur)
-    Case[][] casing; //Tableau representant le plateau
-    SymbolCase[][] symbolcasing;
-    Symbol s;
-    Route r;
+    private int[] boardSize = new int[2]; //Tableau d'entiers qui stockent la taille du plateau à l'index 0(largeur) et 1 (longueur)
+    private Case[][] casing; //Tableau representant le plateau
+    private SymbolCase[][] symbolcasing;
+    private Symbol s;
+    private Route r;
     private String fileName;
     
     
     public Parser(String fileName) throws  IOException{
         this.fileName= fileName;
-        parse(fileName);
+
 
     }
 
@@ -42,14 +42,21 @@ public class Parser {
         
         BufferedReader br = getBuffer(fileName);
         String firstLine = br.readLine();                   //on lit la 1ere ligne du fichier
-        String[] sizer = firstLine.split(" ");              //on eclate la chaine dans un tableau avec le regex "espace"
-        boardSize[0] = Integer.parseInt(sizer[0]);   // on initialise le tableau en fonction de la taille
-        boardSize[1] = Integer.parseInt(sizer[1]);
+        String[] sizer = firstLine.split(" "); //on eclate la chaine dans un tableau avec le regex "espace"
+        for(int a = 0; a < 2; a++){
+            boardSize[a] = Integer.parseInt(sizer[a]);
+        }
+
+        casing = new Case[getBoardSize()[0]][getBoardSize()[1]];
+        symbolcasing = new  SymbolCase[getBoardSize()[0]][getBoardSize()[1]];
+
         for (int i = 0; i <boardSize[0]; i++){
             for (int j = 0; j < boardSize[1] ; j++){
                 casing[i][j] = new RouteCase(r.EMPTY,i,j);                 //on initialise toute ses cases à vide
             }
         }
+
+
 
         String line;
         while ((line = br.readLine()) !=  null) {
@@ -79,6 +86,8 @@ public class Parser {
             }
 
         }
+
+        br.close();
 
     }
 
