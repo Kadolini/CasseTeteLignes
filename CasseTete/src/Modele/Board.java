@@ -88,7 +88,7 @@ public class Board extends Observable{
     public SymbolCase[][] getOnlySymbols() {
         return onlySymbols;
     }
-
+/*
     public void startDD(int i, int j){
         if(tab[i][j].getClass().getName().equals("Modele.CaseSymbole") &&
            tab[i][j].getCaseVerrouillee()==false){
@@ -166,19 +166,19 @@ public class Board extends Observable{
             invalider();
         }
     }
-    
-    public int getLongueur(){
-        return longueur;
+    */
+    public int getHauteur(){
+        return HAUTEUR;
     }
     
     public int getLargeur(){
-        return largeur;
+        return LARGEUR;
     }
     
     public int getTailleGrille(){
-        return longueur*largeur;
+        return LARGEUR*HAUTEUR;
     }
-    
+    /*
     public void setCaseEnRail(int i, int j, CaseRails _case){
         tab[i][j] = _case;
     }
@@ -191,7 +191,7 @@ public class Board extends Observable{
         }
         
     }
-    
+    */
 }
 
 
