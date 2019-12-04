@@ -105,12 +105,12 @@ public class CasseTete extends Application {
         imgSpiral = new Image("img/SPIRALE.jpg");
         imgWall = new Image("img/MUR.png");
         imgStar = new Image("img/ETOILE.jpg");
-        images = new ImageView[board.LARGEUR][board.HAUTEUR];
+        images = new ImageView[game.getBoard().LARGEUR][game.getBoard().HAUTEUR];
         
         GridPane gridPane = new GridPane();
         
-        for (int x = 0; x < board.LARGEUR; x++) {
-            for (int y = 0; y < board.HAUTEUR; y++) {
+        for (int x = 0; x < game.getBoard().LARGEUR; x++) {
+            for (int y = 0; y < game.getBoard().HAUTEUR; y++) {
                 images[x][y] = new ImageView();
                 gridPane.add(images[x][y], x, y);
             }
@@ -136,7 +136,7 @@ public class CasseTete extends Application {
         stackPane.getChildren().add(gridPane);
         //Scene scene = new Scene(stackPane, 486, 492, Color.LIGHTPINK);
         
-        Scene scene = new Scene(stackPane,(board.LARGEUR * IMG_TAILLE), (board.HAUTEUR * IMG_TAILLE+50));
+        Scene scene = new Scene(stackPane,(game.getBoard().LARGEUR * IMG_TAILLE), (game.getBoard().HAUTEUR * IMG_TAILLE+50));
         
         stage.setTitle("CASSE_TETE_LIGNES !");
         stage.setScene(scene);
