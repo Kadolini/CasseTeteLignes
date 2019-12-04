@@ -81,6 +81,10 @@ public class Board {
             }
         }
     }
+
+    public SymbolCase[][] getOnlySymbols() {
+        return onlySymbols;
+    }
 }
 
 

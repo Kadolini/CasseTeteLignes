@@ -12,7 +12,7 @@ public class Game extends Observable{
     private Parser parser;
     
     public Game() throws IOException{
-        parser = new Parser("Levels/level1.txt");
+        parser = new Parser("../levels/level1.txt");
         board = new Board(parser.getBoardSize()[0],parser.getBoardSize()[0], parser.getfileName());
     }
     
@@ -31,6 +31,10 @@ public class Game extends Observable{
         
     }
 
+    public Board getBoard() {
+        return board;
+    }
+
     public void startDD(Integer rowIndex, Integer columnIndex) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
@@ -42,5 +46,5 @@ public class Game extends Observable{
     public void stopDD() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
 }
