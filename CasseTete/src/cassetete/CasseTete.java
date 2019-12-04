@@ -68,7 +68,7 @@ import javafx.scene.paint.Color;
  *
  * @author Askia Abdel Kader
  */
-public class CasseTete extends Application implements Observer{
+public class CasseTete extends Application{
    
     private static final int IMG_TAILLE = 32;
 
@@ -190,7 +190,7 @@ public class CasseTete extends Application implements Observer{
                 content.putString("");
                 db.setContent(content);
                 
-                game.startDD(gridPane.getRowIndex(obs), gridPane.getColumnIndex(obs));
+                game.getBoard().startDD(gridPane.getRowIndex(obs), gridPane.getColumnIndex(obs));
                 System.out.println("Symbole detecté");
                 event.consume();
             });
@@ -198,7 +198,7 @@ public class CasseTete extends Application implements Observer{
         }).map((obs) -> {
             obs.setOnDragEntered((DragEvent event) -> {
                 event.acceptTransferModes(TransferMode.ANY);
-                game.enterDD(gridPane.getRowIndex(obs),gridPane.getColumnIndex(obs));
+                //game.getBoard().enterDD(gridPane.getRowIndex(obs),gridPane.getColumnIndex(obs));
                 System.out.println("Vous etes dans une nouvelle case");
                 event.consume();
             });
@@ -217,7 +217,7 @@ public class CasseTete extends Application implements Observer{
             obs.setOnDragDropped((DragEvent event) -> {
                 Dragboard db = event.getDragboard();
                 boolean success = false;
-                game.stopDD();
+                game.getBoard().stopDD(gridPane.getRowIndex(obs), gridPane.getColumnIndex(obs));
                 System.out.println("Souris relachée");
                 event.setDropCompleted(success);
                 event.consume();
@@ -329,26 +329,70 @@ public class CasseTete extends Application implements Observer{
     *
     ***************************************************************************
     */
-    private void updateGrill(Game game) throws MalformedURLException{
+    private synchronized void updateGame(Game game){
         
-        for(int i = 0; i < game.getBoard().getHauteur(); i++){
+        /*for(int i = 0; i < game.getBoard().getHauteur(); i++){
             for(int j = 0; j < game.getBoard().getLargeur(); j++){
-                if(game.getBoard().getIndexOfGrid(i, j).getClass().getName().equals("Modele.CaseSymbole")){
-                     CaseSymbole cs = (CaseSymbole) game.getBoard().getIndexOfGrid(i, j);
+               /* if(game.getBoard().getIndexOfGrid(i, j).getClass().getName().equals("Modele.CaseSymbole")){
+                     SymbolCase cs = (SymbolCase) game.getBoard().getIndexOfGrid(i, j);
                   
                         File img = new File("images/"+cs.getSymbole()+".jpg");
                         String local = img.toURI().toURL().toString();
                         image = new Image(local);                                           
                         ((ImageView)gridPane.getChildren().get(game.getBoard().getLargeur()*i + j)).setImage(image);
-                }
-                else if(game.getBoard().getIndexOfGrid(i, j).getClass().getName().equals("Modele.CaseRails")){
-                     CaseRails cr = (CaseRails) game.getBoard().getIndexOfGrid(i, j);
-                  
-                        File img = new File("images/"+cr.getRails()+".png");
-                        String local = img.toURI().toURL().toString();
-                        image = new Image(local);
-                        ((ImageView)gPane.getChildren().get(grille.getLargeur()*i + j)).setImage(image);
-                           
+                }*/
+                /*if(game.getBoard().getIndexOfGrid(i, j).getClass().getName().equals("RouteCase")){
+                    RouteCase cr = (RouteCase) game.getBoard().getIndexOfGrid(i, j);
+                    for (int x = 0; x < game.getBoard().getLargeur(); x++) {
+                        for (int y = 0; y < game.getBoard().getHauteur(); y++) {
+                            if(game.getBoard().getGrid()[x][y].g){
+                                switch (game.getBoard().getOnlySymbols()[x][y].getSymbol()) {
+                                    case LEFTUP:
+                                        images[x][y].setImage(img);
+                                        break;
+                                    case LEFTDOWN:
+                                        images[x][y].setImage(imgStar);
+                                        break;
+                                    case RIGHTDOWN:
+                                        images[x][y].setImage(imgTriangle);
+                                        break;
+                                    case RIGHTUP:
+                                        images[x][y].setImage(imgSquare);
+                                        break;
+                                    case UPLEFT:
+                                        images[x][y].setImage(imgSpiral);
+                                        break;
+                                    case DOWNLEFT:
+                                        images[x][y].setImage(imgSpiral);
+                                        break;
+                                    case DOWNRIGHT:
+                                        images[x][y].setImage(imgSpiral);
+                                        break;
+                                    case UPRIGHT:
+                                        images[x][y].setImage(imgSpiral);
+                                        break; 
+                                    case UP:
+                                        images[x][y].setImage(imgUP);
+                                        break;
+                                    case DOWN:
+                                        images[x][y].setImage(imgUP);
+                                        break;
+                                    case LEFT:
+                                        images[x][y].setImage(imgLEFT);
+                                        break;
+                                    case RIGHT:
+                                        images[x][y].setImage(imgLEFT);
+                                        break;
+                                    default :
+                                        break;
+                                }
+
+                            }
+                            else {
+                                images[x][y].setImage(imgEMPTY);
+                            }
+                        }
+                    }                  
                 }
             }
         }
@@ -368,10 +412,10 @@ public class CasseTete extends Application implements Observer{
 
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.get() == buttonRejouer){
-                    replay();
+                    //replay();
                 } 
                 else if (result.get() == buttonSuivant){
-                     next();
+                    //next();
                     
                 }
                 else {
@@ -390,13 +434,13 @@ public class CasseTete extends Application implements Observer{
 
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.get() == buttonRejouer){
-                     replay();
+                     //replay();
                 } 
                 else {
                    System.exit(0);
                 }
             }
-        }
+        }*/
         
     }
     
@@ -407,8 +451,9 @@ public class CasseTete extends Application implements Observer{
     * 
     ***************************************************************************
     */
-    public void replay() throws MalformedURLException{
-         start(stage);     
+    /*
+    public synchronized void replay() throws MalformedURLException{
+         start(Stage stage);     
     }
     /*
     ***************************************************************************
@@ -416,13 +461,14 @@ public class CasseTete extends Application implements Observer{
     * 
     ***************************************************************************
     */
-    public void next() throws MalformedURLException{
+/*    
+    public synchronized void next() throws MalformedURLException{
        int nombre_de_partie=jeu.getJeuGrille().nbFichiers();
         partieEnCours++;
         if(partieEnCours>nombre_de_partie)partieEnCours=1;
          start(stage);
     }
-
+*/
         
     public static void main(String[] args) {
         launch(args);
