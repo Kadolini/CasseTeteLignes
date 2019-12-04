@@ -24,6 +24,7 @@ public class Parser {
         this.fileName= fileName;
 
 
+
     }
 
     public String getfileName(){

@@ -12,9 +12,12 @@ public class Game{
     private Parser parser;
     
     public Game() throws IOException{
-        parser = new Parser("src/Levels/level1.txt");
-        parser.parse("src/Levels/level1.txt");
-        board = new Board(parser.getBoardSize()[0],parser.getBoardSize()[0], parser.getfileName());
+        parser = new Parser("src/Levels/level2.txt");
+        parser.parse("src/Levels/level2.txt");
+        
+       
+        board = new Board(parser.getBoardSize()[0],parser.getBoardSize()[1], parser.getfileName());
+        board.buildOnlySymbols();
     }
     
     public void startGame(){

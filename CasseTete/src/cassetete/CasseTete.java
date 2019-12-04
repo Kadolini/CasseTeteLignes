@@ -67,7 +67,7 @@ import javafx.scene.paint.Color;
 public class CasseTete extends Application {
    
     private static final int IMG_TAILLE = 32;
-    private Board board; 
+
     private ImageView[][] images;
     private Image image;
     private Image imgCase;
@@ -105,7 +105,7 @@ public class CasseTete extends Application {
         imgSpiral = new Image("img/SPIRALE.jpg");
         imgWall = new Image("img/MUR.png");
         imgStar = new Image("img/ETOILE.jpg");
-        images = new ImageView[game.getBoard().getHauteur()][game.getBoard().getHauteur()];
+        images = new ImageView[game.getBoard().getLargeur()][game.getBoard().getHauteur()];
         
         GridPane gridPane = new GridPane();
         
@@ -208,6 +208,7 @@ public class CasseTete extends Application {
         });
         
         //game.lancerJeu();
+        draw();
     }
     
     private synchronized void draw() {
@@ -218,7 +219,7 @@ public class CasseTete extends Application {
     private synchronized void drawGrid() {
         for (int x = 0; x < game.getBoard().getLargeur(); x++) {
             for (int y = 0; y < game.getBoard().getHauteur(); y++) {
-                if(game.getBoard().getOnlySymbols()[x][y].getClass().getName().equals("SymbolCase")){
+                if(game.getBoard().getOnlySymbols()[x][y] != null){
                     switch (game.getBoard().getOnlySymbols()[x][y].getSymbol()) {
                         case WALL:
                             images[x][y].setImage(imgWall);

@@ -35,22 +35,25 @@ public class Board extends Observable{
         //nbPts = 0;
         boardIsFull = false;
         symbolsLinked = false;
+        onlySymbols = new SymbolCase[s1][s2];
         parser = new Parser(fileName);
+        
 
 
         
     }
       
-    public SymbolCase[][] buildOnlySymbols() {
+    public void buildOnlySymbols() throws IOException {
+        parser.parse(parser.getfileName());
         for (int i = 0; i< LARGEUR ;i++){
             for (int j = 0; j< HAUTEUR; j++){
-                if(parser.getSymbolcasing()[i][j] != null){
+                if(parser.getSymbolcasing()[i][j] != null)
                     onlySymbols[i][j] = parser.getSymbolcasing()[i][j];
-                }
+
             }
         }
 
-        return onlySymbols;
+
     }
     
     public void setIndexOfGrid(int i, int j, Case newCase){
