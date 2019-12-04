@@ -40,57 +40,7 @@ public class Board extends Observable{
 
         
     }
-    
-    
-    public int numberOfFile() {
-        File directory = new File("Levels");
-        File[] f = directory.listFiles();
-        int x = 0;
-        for (File f1 : f) {
-            if (f1.isFile()) {
-                x++;
-            }
-        }
-        return x;
-    }    
-    
-    @Override
-    public String toString(){
-        String str="";
-        for(int i=0; i<HAUTEUR; i++){
-            for(int j=0; j< LARGEUR; j++){
-                str+=" "+grid[i][j].toString();
-            }
-            str+="\n";
-        }
-        return str;
-    }
-    
-    
-    public final String readFile(int num){
-        String str="";
-        String myfile = "Levels/level"+num+".txt";
-		//lecture du fichier texte	
-		try{
-                    InputStream inpStr = new FileInputStream(myfile); 
-                    InputStreamReader inpStrReader = new InputStreamReader(inpStr);
-                    BufferedReader b;
-                    b = new BufferedReader(inpStrReader);
-                    String line;
-                    while ((line=b.readLine())!=null){
-                            str+=line;
-                    }
-                    b.close(); 
-		}		
-		catch (IOException e){
-			System.out.println(e.toString());
-		}
-                return str;
-    }
-    
-    
-    
-    
+      
     public SymbolCase[][] buildOnlySymbols() {
         for (int i = 0; i< LARGEUR ;i++){
             for (int j = 0; j< HAUTEUR; j++){
@@ -103,60 +53,9 @@ public class Board extends Observable{
         return onlySymbols;
     }
     
-    
-    public void changeCaseEnRail(Pile pile, Case _case){
-        Case precedente = pile.avantDernierElement() ;
-        Case source = pile.dernierElement();
-        Case suivante = _case;
-        
-        CaseRails caseSourceEnRail = new CaseRails(Rails.VIDE, source.getX(), source.getY());
-         
-       if((precedente.getX() == source.getX()-1 && suivante.getX() == source.getX()+1) 
-        || (precedente.getX() == source.getX()+1 && suivante.getX() == source.getX()-1)){
-           
-           caseSourceEnRail.setRails(Rails.VERTICALE);
-           
-       }else if((precedente.getY() == source.getY()-1 || precedente.getY() == source.getY()+1) &&
-          (suivante.getY() == source.getY()+1 || suivante.getY() == source.getY()-1)){
-           
-           caseSourceEnRail.setRails(Rails.HORIZONTALE);
-          
-       }else if((precedente.getX() == source.getX()-1 && suivante.getY() == source.getY()+1) || 
-               (precedente.getY() == source.getY()+1 && suivante.getX() == source.getX()-1)){
-           
-           caseSourceEnRail.setRails(Rails.HAUTDROIT);
-           
-       }else if((precedente.getX() == source.getX()-1 && suivante.getY() == source.getY()-1) ||
-               (precedente.getY() == source.getY()-1 && suivante.getX() == source.getX()-1)){
-           
-           caseSourceEnRail.setRails(Rails.HAUTGAUCHE);
-          
-       }else if((precedente.getX() == source.getX()+1 && suivante.getY() == source.getY()+1) ||
-               (precedente.getY() == source.getY()+1 && suivante.getX() == source.getX()+1)){
-           
-           caseSourceEnRail.setRails(Rails.BASDROIT);
-         
-       }else if((precedente.getX() == source.getX()+1 && suivante.getY() == source.getY()-1) ||
-               (precedente.getY() == source.getY()-1 && suivante.getX() == source.getX()+1)){
-           
-           caseSourceEnRail.setRails(Rails.BASGAUCHE);
-          
-       }
-        pile.getListe().set(pile.getSize()-1, caseSourceEnRail);
-    }
-    
-    
-    
     public void setIndexOfGrid(int i, int j, Case newCase){
         this.grid[i][j] = newCase;
     }
-    
-    
-    public boolean isFree(Case _case){
-        return _case.getClass().getName().equals("Modele.Case");
-    }    
-    
-    
     
     public Case getIndexOfGrid(int i, int j){
         return grid[i][j];
@@ -189,7 +88,7 @@ public class Board extends Observable{
     public SymbolCase[][] getOnlySymbols() {
         return onlySymbols;
     }
-    
+
     public void startDD(int i, int j){
         if(tab[i][j].getClass().getName().equals("Modele.CaseSymbole") &&
            tab[i][j].getCaseVerrouillee()==false){
@@ -292,7 +191,6 @@ public class Board extends Observable{
         }
         
     }
-    
     
 }
 
