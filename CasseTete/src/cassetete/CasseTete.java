@@ -426,6 +426,7 @@ public class CasseTete extends Application{
     ***************************************************************************
     */
 /*    
+    
     public synchronized void next() throws MalformedURLException{
        int nombre_de_partie=jeu.getJeuGrille().nbFichiers();
         partieEnCours++;
