@@ -12,8 +12,8 @@ public class Game{
     private Parser parser;
     
     public Game() throws IOException{
-        parser = new Parser("src/Levels/level2.txt");
-        parser.parse("src/Levels/level2.txt");
+        parser = new Parser("src/Levels/level3.txt");
+        parser.parse("src/Levels/level3.txt");
         
        
         board = new Board(parser.getBoardSize()[0],parser.getBoardSize()[1], parser.getfileName());

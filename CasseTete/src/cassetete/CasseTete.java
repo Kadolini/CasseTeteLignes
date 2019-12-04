@@ -99,20 +99,31 @@ public class CasseTete extends Application {
         imgUPLEFT = new Image("img/BASGAUCHE.png");
         imgUPRIGHT = new Image("img/BASDROIT.png");
         imgDOWNRIGHT = new Image("img/HAUTDROIT.png");
-        imgEMPTY = new Image("img/VIDE.jpg");
+        imgEMPTY = new Image("img/VIDE.png");
         imgSquare = new Image("img/CARRE.png");
-        imgTriangle = new Image("img/TRIANGLE.jpg");
-        imgSpiral = new Image("img/SPIRALE.jpg");
+        imgTriangle = new Image("img/TRIANGLE.png");
+        imgSpiral = new Image("img/SPIRALE.png");
         imgWall = new Image("img/MUR.png");
-        imgStar = new Image("img/ETOILE.jpg");
+        imgStar = new Image("img/ETOILE.png");
         images = new ImageView[game.getBoard().getLargeur()][game.getBoard().getHauteur()];
         
         GridPane gridPane = new GridPane();
+        
+        gridPane.setStyle("-fx-padding: 10;" + 
+                      "-fx-border-style: solid inside;" + 
+                      "-fx-border-width: 2;" +
+                      "-fx-border-insets: 5;" + 
+                      "-fx-border-radius: 5;" + 
+                      "-fx-border-color: blue;");
+        gridPane.setHgap(3);
+        gridPane.setVgap(3);
         
         for (int x = 0; x < game.getBoard().getLargeur(); x++) {
             for (int y = 0; y < game.getBoard().getHauteur(); y++) {
                 images[x][y] = new ImageView();
                 gridPane.add(images[x][y], x, y);
+                gridPane.setStyle("-fx-border-color: white;");
+                
             }
         }
         
@@ -136,7 +147,8 @@ public class CasseTete extends Application {
         stackPane.getChildren().add(gridPane);
         //Scene scene = new Scene(stackPane, 486, 492, Color.LIGHTPINK);
         
-        Scene scene = new Scene(stackPane,(game.getBoard().getLargeur() * IMG_TAILLE), (game.getBoard().getHauteur() * IMG_TAILLE+50));
+        
+        Scene scene = new Scene(stackPane);
         
         stage.setTitle("CASSE_TETE_LIGNES !");
         stage.setScene(scene);
@@ -232,6 +244,9 @@ public class CasseTete extends Application {
                             break;
                         case SQUARE:
                             images[x][y].setImage(imgSquare);
+                            break;
+                        case SPIRAL:
+                            images[x][y].setImage(imgSpiral);
                             break;
                         default :
                             break;
