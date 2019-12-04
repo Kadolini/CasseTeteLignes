@@ -5,6 +5,7 @@
  */
 package Modele;
 
+import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -26,7 +27,8 @@ public class Board extends Observable{
     private boolean symbolsLinked; // Indique si tout les symboles ont été reliés à leur homonyme
     private SymbolCase[][] onlySymbols;
     private Parser parser;
-    private File file;
+    private SymbolCase draggedSymbol;
+    private JOptionPane d ;
     
     public Board(int s1, int s2, String fileName) throws IOException {
         LARGEUR = s1;
@@ -37,6 +39,7 @@ public class Board extends Observable{
         symbolsLinked = false;
         onlySymbols = new SymbolCase[s1][s2];
         parser = new Parser(fileName);
+        d = new JOptionPane();
         
 
 
@@ -91,18 +94,27 @@ public class Board extends Observable{
     public SymbolCase[][] getOnlySymbols() {
         return onlySymbols;
     }
-/*
+
     public void startDD(int i, int j){
-        if(tab[i][j].getClass().getName().equals("Modele.CaseSymbole") &&
-           tab[i][j].getCaseVerrouillee()==false){
-          CaseSymbole csymbole=(CaseSymbole) tab[i][j];
-          if(csymbole.getSymbole() != Symbole.VIDE){
-            chemin.ajouter(tab[i][j]); 
-            }
+        if(!grid[i][j].getClass().getName().equals("SymbolCase")){
+
+            d.showMessageDialog( null , "Il faut cliquer et dessiner depuis un symbole",
+                    "Mauvaise manip", JOptionPane.ERROR_MESSAGE);
+
         }
-        else 
-           System.out.println("Cliquez sur un Symbole pour tracer le chemin! ");
-    }    
+        else {
+            draggedSymbol = new SymbolCase(getOnlySymbols()[i][j].getSymbol(), i , j);
+        }
+    }
+
+    public void stopDD(int i, int j){
+        if(!grid[i][j].getClass().getName().equals("SymbolCase") || (!getOnlySymbols()[i][j].getSymbol().equals(draggedSymbol.getSymbol()))){
+
+            d.showMessageDialog( null , "Il faut dessiner jusqu'au symbole correspondant",
+                    "Mauvaise manip", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+/*    
 
     public boolean voisin(Case precedente, Case source){
         return ((source.getX()+1) == precedente.getX())  || 

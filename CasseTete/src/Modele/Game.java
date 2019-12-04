@@ -1,5 +1,6 @@
 package Modele;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.util.Observable;
 /**
@@ -8,7 +9,7 @@ import java.util.Observable;
  */
 public class Game{
     private Board board;
-    private int levels;
+
     private Parser parser;
     
     public Game() throws IOException{
@@ -18,6 +19,8 @@ public class Game{
        
         board = new Board(parser.getBoardSize()[0],parser.getBoardSize()[1], parser.getfileName());
         board.buildOnlySymbols();
+
+
     }
     
     public void startGame(){
